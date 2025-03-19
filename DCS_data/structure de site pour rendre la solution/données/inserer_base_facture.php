@@ -1,5 +1,5 @@
     <?php
-$servername = "172.18.143.44:30120";
+$servername = "192.168.1.15:30120";
 $username = "root";
 $password = "rootpassword";
 $dbname = "tableau_bord";
