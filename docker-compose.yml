@@ -8,7 +8,7 @@ services:
       - "8047:443"
     volumes:
       - .:/var/www/html/
-      - ./certs:/var/www/certs  # Monte dans un dossier différent
+      - ./certs:/var/www/certs 
     depends_on:
       - db
 
@@ -22,7 +22,7 @@ services:
     volumes:
       - dbdata:/var/lib/mysql
     ports:
-      - "30120:3306"
+      - "30121:3306"
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin

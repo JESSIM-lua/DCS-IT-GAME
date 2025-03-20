@@ -1,6 +1,6 @@
 <?php
-$servername = "10.200.124.51";
-$port = 30120;
+$servername = "172.18.158.191";
+$port = 30121;
 $username = "root";
 $password = "rootpassword";
 $dbname = "tableau_bord";
@@ -52,6 +52,8 @@ $query = "
     
 ";
 
+
+
 $topClients = $pdo->query($query)->fetchAll();
 
 
@@ -61,17 +63,21 @@ $query = "
     FROM ligne_facturation lf
     JOIN produit p ON lf.produitID = p.produitID
     WHERE lf.mois BETWEEN '2021-01-01' AND '2022-04-30'
-    AND (p.NOM_PRODUIT = '1_1' OR p.NOM_PRODUIT = '1_4')
+    AND (p.NOM_PRODUIT = 'PRODUIT1_1' OR p.NOM_PRODUIT = 'PRODUIT1_4')
     GROUP BY p.NOM_PRODUIT, mois
     ORDER BY mois;
 ";
 $produitEvolution = $pdo->query($query)->fetchAll();
+
+
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="styles.css">
+    
 </head>
 <body>
     <h2>Top 10 Applications par Grand Client</h2>
@@ -87,20 +93,18 @@ $produitEvolution = $pdo->query($query)->fetchAll();
     <script>
     const montantData = <?= json_encode($topClients, JSON_NUMERIC_CHECK) ?>;
     
-    // Vérification console
     console.log("Données JSON :", montantData);
 
     const ctx1 = document.getElementById('montantGraph').getContext('2d');
 
-    // Extraction des labels (mois) et datasets (clients)
-    let labels = [...new Set(montantData.map(row => row.mois))]; // Liste des mois uniques
+    let labels = [...new Set(montantData.map(row => row.mois))];
     let datasets = {};
 
     montantData.forEach(row => {
         if (!datasets[row.NomGrandClient]) {
             datasets[row.NomGrandClient] = {
                 label: row.NomGrandClient,
-                data: Array(labels.length).fill(null), // Initialisation avec des valeurs nulles
+                data: Array(labels.length).fill(null),
                 borderColor: getRandomColor(),
                 fill: false
             };
